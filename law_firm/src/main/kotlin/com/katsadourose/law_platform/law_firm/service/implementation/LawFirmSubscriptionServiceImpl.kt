@@ -1,5 +1,6 @@
 package com.katsadourose.law_platform.law_firm.service.implementation
 
+import com.katsadourose.law_platform.law_firm.exception.LawFirmNotFoundException
 import com.katsadourose.law_platform.law_firm.model.LawFirmSubscription
 import com.katsadourose.law_platform.law_firm.model.SubscriptionStatus
 import com.katsadourose.law_platform.law_firm.repository.LawFirmSubscriptionRepository
@@ -48,6 +49,6 @@ class LawFirmSubscriptionServiceImpl(
 
     override fun findByLawFirmId(lawFirmId: UUID): LawFirmSubscription {
         return lawFirmSubscriptionRepository.findByLawFirmId(lawFirmId)
-            ?: TODO("NotFoundException")
+            ?: throw LawFirmNotFoundException(lawFirmId)
     }
 }

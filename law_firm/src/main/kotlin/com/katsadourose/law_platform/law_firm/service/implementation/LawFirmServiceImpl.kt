@@ -2,6 +2,7 @@ package com.katsadourose.law_platform.law_firm.service.implementation
 
 import com.katsadourose.law_platform.law_firm.model.LawFirm
 import com.katsadourose.law_platform.law_firm.dto.OnboardLawFirmRequest
+import com.katsadourose.law_platform.law_firm.exception.LawFirmNotFoundException
 import com.katsadourose.law_platform.law_firm.mapper.LawFirmMapper.toEntity
 import com.katsadourose.law_platform.law_firm.repository.LawFirmRepository
 import com.katsadourose.law_platform.law_firm.service.LawFirmService
@@ -38,7 +39,7 @@ class LawFirmServiceImpl(
 
     override fun findById(lawFirmId: UUID): LawFirm {
         return lawFirmRepository.findById(lawFirmId)
-            .orElseThrow { TODO("NotFoundException") }
+            .orElseThrow { LawFirmNotFoundException(lawFirmId) }
     }
 
     override fun findAll(): List<LawFirm> {
