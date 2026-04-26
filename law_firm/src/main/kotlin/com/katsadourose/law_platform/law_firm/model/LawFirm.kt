@@ -1,4 +1,4 @@
-package model
+package com.katsadourose.law_platform.law_firm.model
 
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "law_firm")
+@Table(name = "law_firms")
 data class LawFirm(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -15,7 +15,7 @@ data class LawFirm(
 
     val name: String,
 
-    @Column(name = "tax_number")
+    @Column(name = "tax_number", unique = true)
     val taxNumber: String,
 
     val address: String,
@@ -23,6 +23,9 @@ data class LawFirm(
     val email: String,
 
     val phone: String,
+
+    @Column(nullable = false)
+    var active: Boolean = true,
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
