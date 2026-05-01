@@ -1,6 +1,7 @@
 package com.katsadourose.lawcasemanager.lawfirm.service.implementation
 
 import com.katsadourose.lawcasemanager.lawfirm.exception.LawFirmNotFoundException
+import com.katsadourose.lawcasemanager.lawfirm.model.LawFirm
 import com.katsadourose.lawcasemanager.lawfirm.model.LawFirmSubscription
 import com.katsadourose.lawcasemanager.lawfirm.model.SubscriptionStatus
 import com.katsadourose.lawcasemanager.lawfirm.repository.LawFirmSubscriptionRepository
@@ -19,11 +20,11 @@ class LawFirmSubscriptionServiceImpl(
 
     private val logger = LoggerFactory.getLogger(LawFirmSubscriptionServiceImpl::class.java)
 
-    override fun createInitialSubscription(lawFirmId: UUID): LawFirmSubscription {
-        logger.info("Creating initial subscription for law firm with id: $lawFirmId")
+    override fun createInitialSubscription(lawFirm: LawFirm): LawFirmSubscription {
+        logger.info("Creating initial subscription for law firm with id: ${lawFirm.id}")
         val now = LocalDateTime.now()
         val subscription = LawFirmSubscription(
-            lawFirmId = lawFirmId,
+            lawFirm = lawFirm,
             status = SubscriptionStatus.ACTIVE,
             currentPeriodStart = now,
             currentPeriodEnd = now.plusDays(30),
@@ -60,7 +61,7 @@ class LawFirmSubscriptionServiceImpl(
     }
 
     override fun findByLawFirmId(lawFirmId: UUID): LawFirmSubscription {
-        return lawFirmSubscriptionRepository.findByLawFirmId(lawFirmId)
+        return lawFirmSubscriptionRepository.findByLawFirm_Id(lawFirmId)
             ?: throw LawFirmNotFoundException(lawFirmId)
     }
 }

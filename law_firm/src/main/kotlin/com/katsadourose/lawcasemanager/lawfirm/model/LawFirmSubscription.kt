@@ -11,12 +11,9 @@ data class LawFirmSubscription(
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
-    @Column(name = "law_firm_id", nullable = false)
-    val lawFirmId: UUID,
-
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "law_firm_id", referencedColumnName = "id", insertable = false, updatable = false)
-    val lawFirm: LawFirm? = null,
+    @JoinColumn(name = "law_firm_id", nullable = false)
+    val lawFirm: LawFirm,
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -26,7 +26,7 @@ class LawFirmServiceImpl(
         logger.info("Onboarding new law firm: ${request.name}")
         val lawFirm = request.toEntity()
         val savedLawFirm = lawFirmRepository.save(lawFirm)
-        lawFirmSubscriptionService.createInitialSubscription(savedLawFirm.id!!)
+        lawFirmSubscriptionService.createInitialSubscription(savedLawFirm)
         logger.info("Law firm onboarded successfully with id: ${savedLawFirm.id}")
         return savedLawFirm.toResponse()
     }
