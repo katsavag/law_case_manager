@@ -6,7 +6,7 @@ plugins {
 }
 
 allprojects {
-	group = "com.katsadourose"
+	group = "com.katsadourose.lawcasemanager"
 	version = "0.0.1-SNAPSHOT"
 
 	repositories {

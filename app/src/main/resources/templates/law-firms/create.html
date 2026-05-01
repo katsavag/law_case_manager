@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Νέο Δικηγορικό Γραφείο')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell('law-firms', ~{::content})}">
+    <div th:fragment="content">
+        <div class="page-header">
+            <div class="page-title"><h1>Νέο Δικηγορικό Γραφείο</h1>
+                <p>Καταχώρηση νέου πελάτη</p></div>
+        </div>
+        <div th:replace="~{law-firms/form :: lawFirmForm(@{/admin/law-firms}, 'Δημιουργία Γραφείου')}"></div>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

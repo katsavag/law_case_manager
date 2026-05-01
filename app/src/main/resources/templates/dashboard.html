@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell('dashboard', ~{::content})}">
+    <div th:fragment="content">
+        <div class="page-header">
+            <div class="page-title"><h1>Dashboard</h1><p>Επισκόπηση συστήματος</p></div>
+            <input class="form-control w-auto" type="text" value="01/05/2024 - 31/05/2024">
+        </div>
+        <div class="row g-4 mb-4">
+            <div class="col-md-3"><div class="card-soft kpi-card"><div class="kpi-icon"><i class="bi bi-building"></i></div><div class="kpi-value" th:text="${totalLawFirms ?: 124}">124</div><div class="kpi-label">Συνολικά γραφεία</div></div></div>
+            <div class="col-md-3"><div class="card-soft kpi-card"><div class="kpi-icon"><i class="bi bi-repeat"></i></div><div class="kpi-value" th:text="${activeSubscriptions ?: 98}">98</div><div class="kpi-label">Ενεργές συνδρομές</div></div></div>
+            <div class="col-md-3"><div class="card-soft kpi-card"><div class="kpi-icon"><i class="bi bi-cash-stack"></i></div><div class="kpi-value" th:text="${totalRevenue ?: '€24,780'}">€24,780</div><div class="kpi-label">Συνολικά έσοδα</div></div></div>
+            <div class="col-md-3"><div class="card-soft kpi-card"><div class="kpi-icon"><i class="bi bi-exclamation-circle"></i></div><div class="kpi-value" th:text="${pendingDebt ?: '€2,350'}">€2,350</div><div class="kpi-label">Ανεξόφλητες οφειλές</div></div></div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-7"><div class="card-soft p-4"><h5 class="fw-bold mb-3">Πρόσφατες Πληρωμές</h5><table class="table"><tbody><tr th:each="p : ${recentPayments}"><td th:text="${p.lawFirmName}">Δικηγορικό Γραφείο Παπαδοπούλου</td><td th:text="${p.amount}">€180</td><td><span class="status-badge status-success">Επιτυχής</span></td></tr><tr th:if="${recentPayments == null}"><td>Δικηγορικό Γραφείο Παπαδοπούλου</td><td>€180</td><td><span class="status-badge status-success">Επιτυχής</span></td></tr></tbody></table></div></div>
+            <div class="col-lg-5"><div class="card-soft p-4"><h5 class="fw-bold mb-3">Συνδρομές ανά σχέδιο</h5><div class="d-flex justify-content-between mb-3"><span>Basic</span><strong>35</strong></div><div class="usage-bar mb-3"><span style="width:35%"></span></div><div class="d-flex justify-content-between mb-3"><span>Pro</span><strong>45</strong></div><div class="usage-bar mb-3"><span style="width:45%"></span></div><div class="d-flex justify-content-between mb-3"><span>Premium</span><strong>18</strong></div><div class="usage-bar"><span style="width:18%"></span></div></div></div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

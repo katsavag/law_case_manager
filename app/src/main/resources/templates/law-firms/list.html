@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Δικηγορικά Γραφεία')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: shell('law-firms', ~{::content})}">
+    <div th:fragment="content">
+        <div class="page-header">
+            <div class="page-title"><h1>Δικηγορικά Γραφεία</h1>
+                <p>Διαχείριση όλων των πελατών σου</p></div>
+            <a th:href="@{/admin/law-firms/new}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Νέο Γραφείο</a>
+        </div>
+        <div class="card-soft p-4">
+            <table class="table js-datatable">
+                <thead>
+                <tr>
+                    <th>Γραφείο</th>
+                    <th>Email</th>
+                    <th>Κατάσταση</th>
+                    <th>Σχέδιο</th>
+<!--                    <th>Λήξη Συνδρομής</th>-->
+<!--                    <th>Τελευταία Πληρωμή</th>-->
+                    <th>Ενέργειες</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="firm : ${lawFirms}">
+                    <td class="fw-bold" th:text="${firm.name}">Δικηγορικό Γραφείο Παπαδοπούλου</td>
+                    <td th:text="${firm.email}">info@example.gr</td>
+                    <td><span th:class="'badge ' + (${firm.subscriptionStatus == 'ACTIVE'} ? 'badge-success' : 'badge-warning')"
+                              th:text="${firm.subscriptionStatus == 'ACTIVE' ? 'ACTIVE' : 'EXPIRED'}">Ενεργό</span></td>
+                    <td th:text="${firm.subscriptionPlan}">Pro</td>
+<!--                    <td th:text="${firm.subscriptionEndsAt}">28/06/2024</td>-->
+<!--                    <td th:text="${firm.lastPayment}">€180</td>-->
+                    <td><a class="btn btn-sm btn-outline-primary" th:href="@{/admin/law-firms/{id}(id=${firm.id})}"><i
+                            class="bi bi-eye"></i></a> <a class="btn btn-sm btn-outline-secondary"
+                                                          th:href="@{/admin/law-firms/{id}/edit(id=${firm.id})}"><i
+                            class="bi bi-pencil"></i></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>
