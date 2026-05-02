@@ -1,4 +1,4 @@
-package com.katsadourose.law_platform.tenancy.domain
+package com.katsadourose.lawcasemanager.lawfirm.model
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

@@ -34,3 +34,15 @@ data class RecordPaymentRequest(
     val notes: String?,
     val recordedBy: UUID
 )
+
+data class CreateLawFirmUserRequest(
+    val lawFirmId: UUID,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val passwordHash: String,
+    val role: String,
+    val barNumber: String? = null,
+    val barAssociation: String? = null,
+    val specialization: String? = null
+)

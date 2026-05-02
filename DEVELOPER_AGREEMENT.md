@@ -85,3 +85,33 @@ AppException (base, RuntimeException)
 - `timestamp`, `level`, `service`, `module`, `traceId`, `message`
 - `attributes` — παρόν πάντα, κενό object αν δεν υπάρχουν values
 - `exception` — μόνο σε ERROR level
+
+---
+
+## 6. Mapping
+
+- **NO mapping logic in service classes**
+- Use dedicated `Mapper` objects (Kotlin `object` singleton)
+- Mappers contain extension functions for transformations
+- Pattern: `Request.toEntity()`, `Entity.toResponse()`
+
+### Example
+```kotlin
+object LawFirmUserMapper {
+    fun CreateLawFirmUserRequest.toEntity(lawFirm: LawFirm): LawFirmUser {
+        return LawFirmUser(
+            lawFirm = lawFirm,
+            firstName = this.firstName,
+            lastName = this.lastName,
+            // ...
+        )
+    }
+}
+```
+
+### Usage in service
+```kotlin
+import com.katsadourose.lawcasemanager.lawfirm.mapper.LawFirmUserMapper.toEntity
+
+val user = request.toEntity(lawFirm)
+```
