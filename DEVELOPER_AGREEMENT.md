@@ -45,10 +45,32 @@ AppException (base, RuntimeException)
 
 ---
 
-## 4. Error code naming
+## 4. Error codes
 
-- Αγγλικά, SCREAMING_SNAKE_CASE, prefix του domain
-- Παραδείγματα: `LAW_FIRM_NOT_FOUND`, `SUBSCRIPTION_NOT_FOUND`, `PAYMENT_INVALID_PERIOD`
+### Rules
+- **MUST be defined as enum** in each module
+- Enum name: `ErrorCode` in the module's exception package
+- Naming: English, SCREAMING_SNAKE_CASE, with domain prefix
+- Examples: `LAW_FIRM_NOT_FOUND`, `SUBSCRIPTION_NOT_FOUND`, `PAYMENT_INVALID_PERIOD`
+
+### Structure
+```kotlin
+// exception/ErrorCode.kt
+enum class ErrorCode {
+    LAW_FIRM_NOT_FOUND,
+    LAW_FIRM_ALREADY_EXISTS,
+    SUBSCRIPTION_NOT_FOUND,
+    PAYMENT_INVALID_PERIOD
+}
+```
+
+### Usage in exceptions
+```kotlin
+class LawFirmNotFoundException(lawFirmId: UUID) : AppException(
+    errorCode = ErrorCode.LAW_FIRM_NOT_FOUND.name,
+    message = "Law firm not found [lawFirmId=$lawFirmId]"
+)
+```
 
 ---
 
