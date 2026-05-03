@@ -1,5 +1,5 @@
 # Error handling & logging — Developer Agreement
-> Last updated: 2026-04-26
+> Last updated: 2026-05-03
 
 ---
 
@@ -88,7 +88,44 @@ AppException (base, RuntimeException)
 
 ---
 
-## 6. Mapping
+## 6. Service layer architecture
+
+- **Always use interface + implementation pattern**
+- Service interfaces live directly in the `service` package
+- Implementations live in `service/implementation` package
+- Implementation class name = Interface name + `Impl` suffix
+
+### Example structure
+```
+service/
+├── LawFirmService.kt              // interface
+├── LawFirmUserService.kt          // interface
+└── implementation/
+    ├── LawFirmServiceImpl.kt      // @Service implementation
+    └── LawFirmUserServiceImpl.kt  // @Service implementation
+```
+
+### Example
+```kotlin
+// service/LawFirmService.kt
+interface LawFirmService {
+    fun createLawFirm(request: CreateLawFirmRequest): LawFirmResponse
+}
+
+// service/implementation/LawFirmServiceImpl.kt
+@Service
+class LawFirmServiceImpl(
+    private val lawFirmRepository: LawFirmRepository
+) : LawFirmService {
+    override fun createLawFirm(request: CreateLawFirmRequest): LawFirmResponse {
+        // implementation
+    }
+}
+```
+
+---
+
+## 7. Mapping
 
 - **NO mapping logic in service classes**
 - Use dedicated `Mapper` objects (Kotlin `object` singleton)

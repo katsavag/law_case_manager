@@ -1,19 +1,18 @@
-package com.katsadourose.lawcasemanager.lawfirm.model
+package com.katsadourose.lawcasemanager.platformuser.model
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-@Table(name = "law_firm_users")
-data class LawFirmUser(
+@Table(name = "platform_users")
+data class PlatformUser(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "law_firm_id", nullable = false)
-    val lawFirm: LawFirm,
+    @Column(name = "law_firm_id", nullable = true)
+    val lawFirmId: UUID? = null,
 
     @Column(nullable = false)
     val firstName: String,
@@ -21,7 +20,7 @@ data class LawFirmUser(
     @Column(nullable = false)
     val lastName: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val email: String,
 
     @Column(nullable = false)
@@ -29,7 +28,7 @@ data class LawFirmUser(
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    val role: UserRole,
+    val role: PlatformUserRole,
 
     @Column(nullable = false)
     val active: Boolean = true,
@@ -49,7 +48,8 @@ data class LawFirmUser(
     val specialization: String? = null
 )
 
-enum class UserRole {
+enum class PlatformUserRole {
+    SYSTEM_ADMIN,
     ADMIN_LAWYER,
     LAWYER,
     SECRETARY
