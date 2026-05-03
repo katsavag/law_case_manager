@@ -74,41 +74,70 @@ class LawFirmNotFoundException(lawFirmId: UUID) : AppException(
 
 ---
 
-## 5. Logging
+## 5. Log event codes
 
-### Format
-- Structured JSON
-- Γλώσσα: αγγλικά
+Every log entry MUST include an `eventCode` that uniquely identifies the event.
+Event codes apply to ALL log levels — INFO, WARN, ERROR.
 
-### Message format
-```
-"Law firm not found [lawFirmId=3fa85f64]"
-```
-- Contextual values πάντα εντός `[]`
-- Ίδια values επαναλαμβάνονται και ως `attributes` για machine querying
+### Log format
+- All logs MUST be written in structured JSON format
+- Language: English
+- Every log entry MUST contain these fields:
 
-### Log entry structure
 ```json
 {
   "timestamp": "2026-04-26T10:30:00.123Z",
   "level": "ERROR",
-  "service": "law-platform",
-  "module": "tenancy",
+  "service": "law-case-manager",
   "traceId": "abc123",
-  "message": "Law firm not found [lawFirmId=3fa85f64]",
-  "exception": "com.katsadourose.law_platform.core.exception.NotFoundException",
+  "eventCode": "USR_004",
+  "message": "User not found",
+  "exception": "com.katsadourose.lawcasemanager.core.exception.NotFoundException",
   "attributes": {
-    "lawFirmId": "3fa85f64"
+    "userId": "abc123"
   }
 }
 ```
 
 ### Mandatory fields
-- `timestamp`, `level`, `service`, `module`, `traceId`, `message`
-- `attributes` — παρόν πάντα, κενό object αν δεν υπάρχουν values
-- `exception` — μόνο σε ERROR level
+- `timestamp`, `level`, `service`, `traceId`, `eventCode`, `message`
+- `attributes` — always present, empty object if no values
+- `exception` — only on ERROR level
 
----
+### Message format
+- Messages MUST be clean and descriptive without contextual values embedded in text
+- All contextual data MUST be in `attributes` only for machine querying
+- Message should describe the event clearly but not include specific IDs or values
+- Example: `"User not found"` (with userId in attributes, NOT `"User not found [userId=abc123]"`)
+
+### Event code format
+`{MODULE_PREFIX}_{NUMBER}`
+- MODULE_PREFIX: 3 uppercase letters identifying the module
+- NUMBER: 3-digit zero-padded integer
+- Example: `USR_001`, `FRM_003`, `PAY_012`
+
+### Implementation
+
+Each module defines its own event codes as a Kotlin enum
+located at `{module}/logging/EventCodes.kt`.
+
+Each enum entry carries the code as a string property:
+```kotlin
+enum class PlatformUserEventCode(val code: String) {
+    USER_CREATED("USR_001"),
+    USER_DEACTIVATED("USR_002"),
+    ...
+}
+```
+
+### Rules
+- All logs MUST be in JSON format — no plain text logging
+- Every log call MUST reference an entry from the module's EventCode enum
+- New events MUST be added to the enum before being used in code
+- Event codes are immutable — never reuse or renumber an existing entry
+- The `eventCode` field in the log entry uses the `code` string value, not the enum name
+- Module name is derived from the event code prefix, so no need to add it as a separate attribute
+- Log messages MUST NOT contain contextual values like IDs, names, or amounts — use attributes instead
 
 ## 6. Service layer architecture
 

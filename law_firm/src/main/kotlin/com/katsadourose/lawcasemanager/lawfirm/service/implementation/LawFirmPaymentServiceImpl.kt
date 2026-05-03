@@ -2,6 +2,7 @@ package com.katsadourose.lawcasemanager.lawfirm.service.implementation
 
 import com.katsadourose.lawcasemanager.lawfirm.dto.RecordPaymentRequest
 import com.katsadourose.lawcasemanager.lawfirm.dto.LawFirmPaymentResponse
+import com.katsadourose.lawcasemanager.lawfirm.logging.EventCode
 import com.katsadourose.lawcasemanager.lawfirm.mapper.LawFirmPaymentMapper.toEntity
 import com.katsadourose.lawcasemanager.lawfirm.mapper.LawFirmPaymentMapper.toResponse
 import com.katsadourose.lawcasemanager.lawfirm.repository.LawFirmPaymentRepository
@@ -22,11 +23,20 @@ class LawFirmPaymentServiceImpl(
     private val logger = LoggerFactory.getLogger(LawFirmPaymentServiceImpl::class.java)
 
     override fun recordPayment(request: RecordPaymentRequest): LawFirmPaymentResponse {
-        logger.info("Recording payment for law firm with id: ${request.lawFirmId}, amount: ${request.amount}")
+        logger.atInfo()
+            .addKeyValue("eventCode", EventCode.PAYMENT_RECORDING_STARTED.code)
+            .addKeyValue("lawFirmId", request.lawFirmId)
+            .addKeyValue("amount", request.amount)
+            .addKeyValue("periodEnd", request.periodEnd)
+            .log("Recording payment for law firm")
         val payment = request.toEntity()
         val savedPayment = lawFirmPaymentRepository.save(payment)
         lawFirmSubscriptionService.renewSubscription(request.lawFirmId, request.periodEnd)
-        logger.info("Payment recorded successfully with id: ${savedPayment.id}")
+        logger.atInfo()
+            .addKeyValue("eventCode", EventCode.PAYMENT_RECORDED.code)
+            .addKeyValue("paymentId", savedPayment.id)
+            .addKeyValue("lawFirmId", request.lawFirmId)
+            .log("Payment recorded successfully")
         return savedPayment.toResponse()
     }
 

@@ -3,10 +3,14 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":common"))
     implementation(project(":law_firm"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.flywaydb:flyway-core")
+    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
+    implementation("io.micrometer:micrometer-tracing-bridge-brave")
+    implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
 }
